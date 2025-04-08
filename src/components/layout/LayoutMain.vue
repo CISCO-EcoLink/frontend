@@ -4,7 +4,7 @@ import { RouterView } from 'vue-router'
 
 <template>
   <main class="grow flex flex-col bg-base">
-    <div class="grow flex flex-col max-w-base mx-auto">
+    <div class="grow flex flex-col max-w-base mx-auto w-full">
       <RouterView />
     </div>
   </main>
