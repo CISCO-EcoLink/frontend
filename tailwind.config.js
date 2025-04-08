@@ -27,6 +27,7 @@ export default {
         base: '1280px',
       },
       borderRadius: {
+        base: '0.5rem',
         lg: '1rem',
       },
     },

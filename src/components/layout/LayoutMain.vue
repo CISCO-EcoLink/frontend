@@ -3,8 +3,8 @@ import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <main class="bg-base w-full grow">
-    <div class="max-w-base mx-auto">
+  <main class="grow flex flex-col bg-base">
+    <div class="grow flex flex-col max-w-base mx-auto">
       <RouterView />
     </div>
   </main>
