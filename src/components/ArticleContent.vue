@@ -20,7 +20,6 @@ defineProps({
       </span>
     </p>
     <div class="grow w-full">
-      <!-- <RouterView /> -->
       <slot />
     </div>
   </div>
