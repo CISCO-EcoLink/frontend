@@ -14,7 +14,7 @@ const userRankingList = userRankList
   <section class="w-full flex flex-col p-6 gap-4">
     <div class="w-full flex flex-col gap-4">
       <p class="flex items-center gap-2 font-semibold text-lg">
-        <img src="/images/crown.png" alt="Crown" class="w-6" />
+        <img src="/images/goldCrown.png" alt="Crown" class="w-6" />
         <span>지역 봉사 랭킹</span>
       </p>
       <div class="w-full px-4">
@@ -52,7 +52,7 @@ const userRankingList = userRankList
 
     <div class="w-full flex flex-col gap-4">
       <p class="flex items-center gap-2 font-semibold text-lg">
-        <img src="/images/crown.png" alt="Crown" class="w-6" />
+        <img src="/images/goldCrown.png" alt="Crown" class="w-6" />
         <span>지역 봉사 랭킹</span>
       </p>
       <div class="w-full px-4">
