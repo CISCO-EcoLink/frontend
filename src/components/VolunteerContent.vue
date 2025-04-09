@@ -1,7 +1,7 @@
 <script setup>
 import { activityList } from '@/lib/user'
-import ArticlePreview from './ArticlePreview.vue'
 import { ref } from 'vue'
+import ArticleContent from './ArticleContent.vue'
 
 defineProps({
   selectedRegion: {
@@ -39,14 +39,14 @@ const reserveHandler = (user) => {
 <template>
   <section class="grow flex flex-wrap justify-center items-center gap-4">
     <div class="w-2/5 h-[30rem]">
-      <ArticlePreview title="지도" imgSrc="/images/map.png" />
+      <ArticleContent title="지도">
+        <img src="/images/map.png" alt="Map Image" class="w-full h-full object-center" />
+      </ArticleContent>
     </div>
     <div class="w-2/5 h-[30rem]">
-      <ArticlePreview
-        title="카메라"
-        :description="`${selectedRegion} ${selectedDistrict}`"
-        imgSrc="/images/before.png"
-      />
+      <ArticleContent title="카메라" :description="`${selectedRegion} ${selectedDistrict}`">
+        <img src="/images/before.png" alt="before Img" class="w-full h-full object-center" />
+      </ArticleContent>
     </div>
     <table class="w-[70vw] text-center mt-4 shadow-lg">
       <thead>
