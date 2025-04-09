@@ -97,7 +97,7 @@ const reserveHandler = (user) => {
           title="카메라"
           :description="`${props.selectedRegion} ${props.selectedDistrict}`"
         >
-          <img src="/images/before.png" alt="before Img" class="w-full h-full object-center" />
+          <img src="/images/before1.png" alt="before Img" class="w-full h-full object-center" />
         </ArticleContent>
       </div>
     </Transition>
