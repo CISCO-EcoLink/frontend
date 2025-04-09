@@ -1,13 +1,13 @@
 <script setup>
 import AppPagination from '@/components/AppPagination.vue'
-import { regionRank, userRank } from '@/lib/rank'
+import { regionRankList, userRankList } from '@/lib/rank'
 import { ref } from 'vue'
 
 const regionCurrentPage = ref(1)
-const regionRankingList = regionRank
+const regionRankingList = regionRankList
 
 const userCurrentPage = ref(1)
-const userRankingList = userRank
+const userRankingList = userRankList
 </script>
 
 <template>
