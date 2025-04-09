@@ -1,7 +1,17 @@
 <script setup>
-import ArticlePreview from '@/components/ArticlePreview.vue'
-</script>
+import ArticlePreview from './ArticlePreview.vue'
 
+defineProps({
+  selectedRegion: {
+    type: String,
+    required: true,
+  },
+  selectedDistrict: {
+    type: String,
+    required: true,
+  },
+})
+</script>
 <template>
   <section class="grow flex flex-wrap justify-center items-center gap-4">
     <div class="w-2/5">
