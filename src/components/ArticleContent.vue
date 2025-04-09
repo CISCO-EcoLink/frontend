@@ -5,7 +5,6 @@ defineProps({
     type: String,
     default: '',
   },
-  imgSrc: String,
 })
 </script>
 <template>
@@ -21,7 +20,7 @@ defineProps({
       </span>
     </p>
     <div class="grow w-full">
-      <img :src="imgSrc" alt="Article Image" class="w-full h-full object-center" />
+      <slot />
     </div>
   </div>
 </template>
