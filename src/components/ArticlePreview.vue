@@ -16,12 +16,12 @@ defineProps({
       class="h-[2.5rem] w-full bg-primary text-lightblue font-semibold flex items-center justify-between px-4"
     >
       <span>{{ title }}</span>
-      <span v-if="description" class="text-sm text-gray-500">
+      <span v-if="description" class="text-sm text-lightblue">
         {{ description }}
       </span>
     </p>
     <div class="grow w-full">
-      <img :src="imgSrc" alt="Article Image" class="w-full h-full object-cover" />
+      <img :src="imgSrc" alt="Article Image" class="w-full h-full object-center" />
     </div>
   </div>
 </template>
