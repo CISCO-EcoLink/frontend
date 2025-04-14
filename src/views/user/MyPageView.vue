@@ -2,6 +2,7 @@
 import UserCalendar from '@/components/UserCalendar.vue'
 import { userList } from '@/lib/user'
 import { ref } from 'vue'
+import VolunteerAchievement from '@/components/VolunteerAchievement.vue'
 
 const user = ref(userList[0])
 </script>
@@ -51,6 +52,10 @@ const user = ref(userList[0])
     <div class="flex flex-col gap-4 bg-white rounded-base shadow-lg p-4">
       <p class="font-semibold text-2xl">내 활동</p>
       <UserCalendar />
+    </div>
+    <div class="flex flex-col gap-4 bg-white rounded-base shadow-lg p-4">
+      <p class="font-semibold text-2xl">도감</p>
+      <VolunteerAchievement />
     </div>
   </section>
 </template>
