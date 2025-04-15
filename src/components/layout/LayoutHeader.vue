@@ -1,6 +1,7 @@
 <script setup>
 import { adminNavigationList, userNavigationList, navigationToKor } from '@/lib/navigator'
-import { computed } from 'vue'
+import { notificationList } from '@/lib/notification'
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -9,16 +10,37 @@ const isAdmin = computed(() => route.path.startsWith('/admin'))
 const navigationList = computed(() => (isAdmin.value ? adminNavigationList : userNavigationList))
 const basePath = computed(() => (isAdmin.value ? '/admin' : ''))
 
-// item을 경로로 변환
+const notifications = ref(notificationList)
+
 const resolvePath = (item) => {
   return `${basePath.value}${item.startsWith('/') ? item : '/' + item}`
 }
 
-// 현재 경로가 해당 item으로 시작하는지 확인
 const isActive = (item) => {
   const fullPath = resolvePath(item)
   return route.path.startsWith(fullPath)
 }
+
+// 드롭다운 관련
+const dropdownVisible = ref(false)
+const toggleDropdown = () => {
+  dropdownVisible.value = !dropdownVisible.value
+}
+
+// 외부 클릭 감지를 위한 ref
+const alertRef = ref(null)
+const handleClickOutside = (e) => {
+  if (alertRef.value && !alertRef.value.contains(e.target)) {
+    dropdownVisible.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <template>
@@ -30,7 +52,8 @@ const isActive = (item) => {
         </div>
         <span class="font-bold text-[1.5rem] text-lightblue mx-4">EcoLink</span>
       </RouterLink>
-      <nav class="flex gap-4">
+
+      <nav class="flex gap-4 grow">
         <span
           v-for="item in navigationList"
           :key="item"
@@ -41,6 +64,47 @@ const isActive = (item) => {
           </RouterLink>
         </span>
       </nav>
+
+      <div class="mr-8 flex gap-4 items-center">
+        <div class="relative w-8 h-8" ref="alertRef">
+          <img
+            src="/images/alert.png"
+            alt="알림"
+            class="w-full h-full hover:cursor-pointer bg-disabled"
+            @click.stop="toggleDropdown"
+          />
+          <div
+            v-if="notifications.length"
+            class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shadow"
+          >
+            {{ notifications.length }}
+          </div>
+
+          <!-- 드롭다운 -->
+          <div
+            v-if="dropdownVisible"
+            class="absolute right-0 mt-2 w-64 bg-white border border-gray-200 shadow-lg rounded-md z-50"
+          >
+            <div v-if="notifications.length" class="p-2 max-h-60 overflow-y-auto">
+              <div
+                v-for="(notification, index) in notifications"
+                :key="index"
+                class="p-2 border-b last:border-none hover:bg-gray-50"
+              >
+                <p class="font-semibold text-sm text-gray-800">
+                  {{ notification.title }}
+                </p>
+                <p class="text-xs text-gray-600">
+                  {{ notification.description }}
+                </p>
+              </div>
+            </div>
+            <div v-else class="p-2 text-sm text-gray-500 text-center">알림이 없습니다</div>
+          </div>
+        </div>
+
+        <img src="/images/logout.png" alt="로그아웃" class="w-6 h-6 hover:cursor-pointer" />
+      </div>
     </div>
   </header>
 </template>
