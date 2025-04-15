@@ -10,8 +10,6 @@ const isAdmin = computed(() => route.path.startsWith('/admin'))
 const navigationList = computed(() => (isAdmin.value ? adminNavigationList : userNavigationList))
 const basePath = computed(() => (isAdmin.value ? '/admin' : ''))
 
-const notifications = ref(notificationList)
-
 const resolvePath = (item) => {
   return `${basePath.value}${item.startsWith('/') ? item : '/' + item}`
 }
@@ -21,17 +19,29 @@ const isActive = (item) => {
   return route.path.startsWith(fullPath)
 }
 
-// 드롭다운 관련
+const notifications = ref(notificationList)
+
+const unreadCount = computed(
+  () => notifications.value.filter((n) => n.read === false || n.read === undefined).length,
+)
+
 const dropdownVisible = ref(false)
 const toggleDropdown = () => {
   dropdownVisible.value = !dropdownVisible.value
 }
 
-// 외부 클릭 감지를 위한 ref
 const alertRef = ref(null)
 const handleClickOutside = (e) => {
   if (alertRef.value && !alertRef.value.contains(e.target)) {
     dropdownVisible.value = false
+  }
+}
+
+const goToActivityRoom = (url) => {
+  if (url) {
+    window.open(url, '_blank')
+  } else {
+    alert('Webex 링크가 없습니다')
   }
 }
 
@@ -74,29 +84,40 @@ onBeforeUnmount(() => {
             @click.stop="toggleDropdown"
           />
           <div
-            v-if="notifications.length"
+            v-if="unreadCount > 0"
             class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shadow"
           >
-            {{ notifications.length }}
+            {{ unreadCount }}
           </div>
 
           <!-- 드롭다운 -->
           <div
             v-if="dropdownVisible"
-            class="absolute right-0 mt-2 w-64 bg-white border border-gray-200 shadow-lg rounded-md z-50"
+            class="absolute right-0 mt-2 w-72 bg-white border border-gray-200 shadow-lg rounded-md z-50"
           >
             <div v-if="notifications.length" class="p-2 max-h-60 overflow-y-auto">
               <div
                 v-for="(notification, index) in notifications"
                 :key="index"
-                class="p-2 border-b last:border-none hover:bg-gray-50"
+                :class="[
+                  'p-2 border-b last:border-none hover:bg-gray-50 rounded-sm',
+                  notification.read ? 'bg-gray-100' : '',
+                ]"
+                @click="
+                  () => {
+                    notification.read = true
+                  }
+                "
               >
-                <p class="font-semibold text-sm text-gray-800">
-                  {{ notification.title }}
-                </p>
-                <p class="text-xs text-gray-600">
-                  {{ notification.description }}
-                </p>
+                <p class="font-semibold text-sm text-gray-800">{{ notification.title }}</p>
+                <p class="text-xs text-gray-600">{{ notification.description }}</p>
+                <button
+                  v-if="notification.activity"
+                  class="mt-2 text-xs text-blue-500 hover:underline"
+                  @click="goToActivityRoom(notification.activity.webexUrl)"
+                >
+                  참여하기 →
+                </button>
               </div>
             </div>
             <div v-else class="p-2 text-sm text-gray-500 text-center">알림이 없습니다</div>

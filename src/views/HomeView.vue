@@ -2,6 +2,7 @@
 import AppPagination from '@/components/AppPagination.vue'
 import { regionRankList, userRankList } from '@/lib/rank'
 import { activityList } from '@/lib/user'
+import { generateWebexRoom } from '@/service/webex'
 import { ref } from 'vue'
 import { onMounted, onBeforeUnmount } from 'vue'
 
@@ -43,7 +44,7 @@ onBeforeUnmount(() => {
 const regionCurrentPage = ref(1)
 const regionRankingList = regionRankList
 const userRankingList = userRankList.slice(0, 10) // 상위 10명만 예시
-const userActivityList = [activityList[3], activityList[1]]
+const userActivityList = [activityList[0], activityList[1], activityList[2]]
 
 const isActivityModalOpen = ref(false)
 const isDetailModalOpen = ref(false)
@@ -72,6 +73,18 @@ const sendAlert = () => {
     alert(`${selectedActivity.value.region} 지역에 봉사 모집 알림을 보냈습니다`)
   } else {
     alert('지역 정보가 없습니다')
+  }
+}
+
+const enterWebexRoom = async (activity) => {
+  if (!activity.webexUrl || activity.webexUrl.length === 0) {
+    await generateWebexRoom(activity)
+  }
+
+  if (activity.webexUrl) {
+    window.open(activity.webexUrl, '_blank') // 새 탭에서 열기
+  } else {
+    alert('Webex URL이 없습니다.')
   }
 }
 </script>
@@ -278,7 +291,10 @@ const sendAlert = () => {
           <div class="flex flex-col gap-2 font-semibold">
             <p>봉사지역 : {{ selectedActivity.region }}</p>
             <p>Level : {{ selectedActivity.level }}</p>
-            <p>적정 인원 : {{ selectedActivity.curUser }} / {{ selectedActivity.requireUser }}</p>
+            <p>
+              적정 인원 : {{ selectedActivity.curUser.length }} /
+              {{ selectedActivity.requireUser }}
+            </p>
             <p>날짜 : {{ selectedActivity.date }}</p>
             <p>시각 : {{ selectedActivity.time }}</p>
           </div>
@@ -305,10 +321,17 @@ const sendAlert = () => {
             <div class="flex gap-2 mt-6">
               <button
                 class="px-4 py-2 bg-secondary text-white font-semibold rounded-md hover:bg-secondary/80 transition"
-                v-if="selectedActivity.curUser < selectedActivity.requireUser"
+                v-if="selectedActivity.curUser.length < selectedActivity.requireUser"
                 @click="sendAlert"
               >
                 모집하기
+              </button>
+              <button
+                class="px-4 py-2 bg-secondary text-white font-semibold rounded-md hover:bg-secondary/80 transition"
+                v-if="selectedActivity.curUser.length == selectedActivity.requireUser"
+                @click="enterWebexRoom(selectedActivity)"
+              >
+                Webex 참여하기
               </button>
 
               <button
