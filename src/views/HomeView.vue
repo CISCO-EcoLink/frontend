@@ -3,7 +3,43 @@ import AppPagination from '@/components/AppPagination.vue'
 import { regionRankList, userRankList } from '@/lib/rank'
 import { activityList } from '@/lib/user'
 import { ref } from 'vue'
+import { onMounted, onBeforeUnmount } from 'vue'
 
+const sectionRef = ref(null)
+
+let lastScrollY = 0
+let ticking = false
+
+const handleScroll = () => {
+  const scrollY = window.scrollY
+  const viewportHeight = window.innerHeight
+
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      const direction = scrollY > lastScrollY ? 'down' : 'up'
+
+      if (direction === 'down' && scrollY > viewportHeight * 0.3 && scrollY < viewportHeight) {
+        window.scrollTo({ top: viewportHeight, behavior: 'smooth' })
+      }
+
+      if (direction === 'up' && scrollY < viewportHeight * 1.3 && scrollY > 0) {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+
+      lastScrollY = scrollY
+      ticking = false
+    })
+
+    ticking = true
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
 const regionCurrentPage = ref(1)
 const regionRankingList = regionRankList
 const userRankingList = userRankList.slice(0, 10) // 상위 10명만 예시
@@ -48,7 +84,7 @@ const sendAlert = () => {
         <span>EcoLink로</span><span> 봉사를 더 쉽게 </span>
       </p>
     </div>
-    <div class="w-full flex flex-col items-center gap-10 mb-10">
+    <div class="w-full flex flex-col items-center gap-10 mb-10" ref="sectionRef">
       <div class="w-full flex flex-col gap-4">
         <p class="flex items-center gap-2 font-semibold text-lg">
           <span>지역 봉사 랭킹</span>
