@@ -3,7 +3,7 @@ import { activityList } from './user'
 export let notificationList = [
   {
     title: 'webex방 개설',
-    description: '서울특별시 영등포구 봉사활동을 위한 webex방이 개설되었습니다. 참여하세요!',
+    description: '서울특별시 강남구 봉사활동을 위한 webex방이 개설되었습니다. 참여하세요!',
     activity: activityList[1],
   },
   {

@@ -97,7 +97,7 @@ const reserveHandler = (user) => {
           title="카메라"
           :description="`${props.selectedRegion} ${props.selectedDistrict}`"
         >
-          <img src="/images/before1.png" alt="before Img" class="w-full h-full object-center" />
+          <img src="/images/demodata1.png" alt="before Img" class="w-full h-full object-center" />
         </ArticleContent>
       </div>
     </Transition>
@@ -120,7 +120,9 @@ const reserveHandler = (user) => {
             <td class="py-1 font-semibold">{{ activity.requireUser }}인</td>
             <td class="py-1">
               <span
-                v-if="activity.state === 'accept' || activity.curUser == activity.requireUser"
+                v-if="
+                  activity.state === 'accept' || activity.curUser.length == activity.requireUser
+                "
                 class="text-red font-medium"
                 >불가능</span
               >
@@ -150,7 +152,9 @@ const reserveHandler = (user) => {
         <div class="flex flex-col gap-2 font-semibold">
           <p>봉사지역 : {{ `${props.selectedRegion} ${props.selectedDistrict}` }}</p>
           <p>Level : {{ selectedActivity.level }}</p>
-          <p>적정 인원 : {{ selectedActivity.curUser }} / {{ selectedActivity.requireUser }}</p>
+          <p>
+            적정 인원 : {{ selectedActivity.curUser.length }} / {{ selectedActivity.requireUser }}
+          </p>
           <p>날짜 : {{ selectedActivity.date }}</p>
           <p>시각 : {{ selectedActivity.time }}</p>
         </div>
@@ -168,10 +172,10 @@ const reserveHandler = (user) => {
           <div class="flex gap-2 mt-6">
             <button
               class="px-4 py-2 bg-secondary text-white font-semibold rounded-md hover:bg-secondary/80 transition"
-              v-if="selectedActivity.curUser < selectedActivity.requireUser"
+              v-if="selectedActivity.curUser.length < selectedActivity.requireUser"
               @click="reserveHandler(selectedActivity.curUser)"
             >
-              {{ selectedActivity.curUser > 0 ? '참여하기' : '예약하기' }}
+              {{ selectedActivity.curUser.length > 0 ? '참여하기' : '예약하기' }}
             </button>
           </div>
         </div>

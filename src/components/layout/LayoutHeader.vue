@@ -3,6 +3,7 @@ import { adminNavigationList, userNavigationList, navigationToKor } from '@/lib/
 import { notificationList } from '@/lib/notification'
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
+import { generateWebexRoom } from '@/service/webex'
 
 const route = useRoute()
 
@@ -37,11 +38,17 @@ const handleClickOutside = (e) => {
   }
 }
 
-const goToActivityRoom = (url) => {
-  if (url) {
-    window.open(url, '_blank')
+const goToActivityRoom = async (activity) => {
+  if (activity.webexUrl) {
+    window.open(activity.url, '_blank')
   } else {
-    alert('Webex 링크가 없습니다')
+    await generateWebexRoom(activity)
+  }
+
+  if (activity.webexUrl) {
+    window.open(activity.webexUrl, '_blank') // 새 탭에서 열기
+  } else {
+    alert('Webex URL이 없습니다.')
   }
 }
 
@@ -114,7 +121,7 @@ onBeforeUnmount(() => {
                 <button
                   v-if="notification.activity"
                   class="mt-2 text-xs text-blue-500 hover:underline"
-                  @click="goToActivityRoom(notification.activity.webexUrl)"
+                  @click="goToActivityRoom(notification.activity)"
                 >
                   참여하기 →
                 </button>

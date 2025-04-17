@@ -1,5 +1,4 @@
 export const generateWebexRoom = async (activity) => {
-  console.log(activity)
   const res = await fetch(`${import.meta.env.VITE_WEBEX_SERVER_URL}/create-room`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
