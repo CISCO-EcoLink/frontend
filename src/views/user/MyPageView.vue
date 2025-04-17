@@ -2,6 +2,7 @@
 import UserCalendar from '@/components/UserCalendar.vue'
 import { userList } from '@/lib/user'
 import { ref } from 'vue'
+import VolunteerAchievement from '@/components/VolunteerAchievement.vue'
 
 const user = ref(userList[0])
 </script>
@@ -14,15 +15,25 @@ const user = ref(userList[0])
         <!-- 프로필 사진 안내 -->
         <li class="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-4 py-3">
           <span class="font-semibold w-32 shrink-0">프로필 사진</span>
-          <span class="text-gray-600"
+          <span class="grow text-gray-600"
             >게시판과 쪽지에서 더 잘 보이도록 프로필 사진을 추가해보세요.</span
           >
+          <img
+            class="mr-4 w-9 h-9 rounded-full object-cover hover:cursor-pointer"
+            src="/images/userIcon.png"
+            alt="프로필 사진"
+          />
         </li>
 
         <!-- 이름 -->
         <li class="flex items-center gap-4 py-3">
           <span class="font-semibold w-32 shrink-0">이름</span>
-          <span>{{ user.name }}</span>
+          <span class="grow">{{ user.name }}</span>
+          <img
+            class="mr-4 w-7 h-7 object-cover hover:cursor-pointer"
+            src="/images/pencil.png"
+            alt="프로필 사진"
+          />
         </li>
 
         <!-- 지역 -->
@@ -41,6 +52,10 @@ const user = ref(userList[0])
     <div class="flex flex-col gap-4 bg-white rounded-base shadow-lg p-4">
       <p class="font-semibold text-2xl">내 활동</p>
       <UserCalendar />
+    </div>
+    <div class="flex flex-col gap-4 bg-white rounded-base shadow-lg p-4">
+      <p class="font-semibold text-2xl">도감</p>
+      <VolunteerAchievement />
     </div>
   </section>
 </template>
